@@ -1,0 +1,9 @@
+// isneg16
+// this is a self-made chip to tell a 16-bit number is negtive or not
+//
+CHIP isNeg16{
+    IN in[16];
+    OUT out;
+    PARTS:
+        Mux(a=true, b=false, sel=in[15], out=out);
+}

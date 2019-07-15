@@ -43,26 +43,51 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+        // //
+        // //  Define the role of flags inputed
+        // //
+        // DMux16(in=x, sel=zx, a=zx1, b=zx2);
+        // DMux16(in=x, sel=nx, a=nx1, b=nx2);
+        // DMux16(in=y, sel=zy, a=zy1, b=zy2);
+        // DMux16(in=y, sel=ny, a=ny1, b=ny2);
+        // Mux16(a=and1, b=or1, sel=f, out=out1);
+        // DMux16(in=out1, sel=no, a=pout, b=out2);
+        // Not16(in=out2, out=nout);
+        // Or16(a=pout, b=nout, out=out);
+        // //
+        // // make x or y zero when flag zx or zy is 1
+        // //
+        // Or16(a=zx1, b=0, out=x1);  
+        // Or16(a=zy1, b=0, out=y1);
+        // //
+        // // not x or y  when flag nx or ny is 1
+        // //
+        // Or16(a=nx1, b=nnx2, out=x1);
+        // Not16(in=nx2, out=nnx2);
         //
-        //  Define the role of flags inputed
+        // Code above is a *wrong* (or more complex) way, we can use Mux to run it.
+        // below is the Mux way:
         //
-        DMux16(in=x, sel=zx, a=zx1, b=zx2);
-        DMux16(in=x, sel=nx, a=nx1, b=nx2);
-        DMux16(in=y, sel=zy, a=zy1, b=zy2);
-        DMux16(in=y, sel=ny, a=ny1, b=ny2);
-        Mux16(a=and1, b=or1, sel=f, out=out1);
-        DMux16(in=out1, sel=no, a=pout, b=out2);
-        Not16(in=out2, out=nout);
-        Or16(a=pout, b=nout, out=out);
-        //
-        // make x or y zero when flag zx or zy is 1
-        //
-        Or16(a=zx1, b=0, out=x1);  
-        Or16(a=zy1, b=0, out=y1);
-        //
-        // not x or y  when flag nx or ny is 1
-        //
-        Or16(a=nx1, b=nnx2, out=x1);
-        Not16(in=nx2, out=nnx2);
+        Mux16(a=x, b=false, sel=zx, out=x2bInput);                  // flag zx
+        Mux16(a=y, b=false, sel=zy, out=y2bInput);                  // flag zy
+        Mux16(a=x2bInput, b=notx2bInput, sel=nx, out=x2bCompute);   // flag nx
+        Mux16(a=y2bInput, b=noty2bInput, sel=ny, out=y2bCompute);   // flag ny
+        Mux16(a=andxy, b=addxy, sel=f, out=o2bOutput);              // flag f
+        Mux16(a=o2bOutput, b=noto2bOutput, sel=no, out=out2bd);     // flag no
         
+        // Bottom element used above
+        Not16(in=x2bInput, out=notx2bInput);
+        Not16(in=y2bInput, out=noty2bInput);
+        And16(a=x2bCompute, b=y2bCompute, out=andxy);
+        Add16(a=x2bCompute, b=y2bCompute, out=addxy);
+        Not16(in=o2bOutput, out=noto2bOutput);
+        
+        // set zr and ng flag 
+        Mux(a=true, b=false, sel=outIsZero, out=zr);
+        Mux(a=true, b=false, sel=outIsNeg, out=ng);
+        //  call self-defined chip
+        isZero16(in=out2bd, out=outIsZero);
+        isNeg16(in=out2bd, out=outIsNeg);
+        // output
+        Or16(a=out2bd, b=false, out=out);
 }

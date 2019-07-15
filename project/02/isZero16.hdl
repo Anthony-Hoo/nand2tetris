@@ -1,0 +1,23 @@
+// isZero16
+// this is a self-made chip to tell a 16-bit number is all 0 or not
+//
+CHIP isZero16{
+    IN in[16];
+    OUT out;
+    PARTS:
+        Or(a=in[0], b=in[2], out=or02);
+        Or(a=in[1], b=in[3], out=or13);
+        Or(a=in[4], b=in[6], out=or46);
+        Or(a=in[5], b=in[7], out=or57);
+        Or(a=in[8], b=in[10], out=or810);
+        Or(a=in[9], b=in[11], out=or911);
+        Or(a=in[12], b=in[14], out=or1214);
+        Or(a=in[13], b=in[15], out=or1315);
+        Or(a=or02, b=or13, out=or0123);
+        Or(a=or46, b=or57, out=or4567);
+        Or(a=or810, b=or911, out=or891011);
+        Or(a=or1214, b=or1315, out=or12131415);
+        Or(a=or0123, b=or4567, out=or01234567);
+        Or(a=or891011, b=or12131415, out=or89101112131415);
+        Or(a=or01234567, b=or89101112131415, out=out);
+}
