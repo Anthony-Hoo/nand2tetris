@@ -17,5 +17,17 @@ CHIP PC {
 
     PARTS:
     // Put your code here:
-    
+        Register(in=tBin, load=ctrl, out=tBout);
+
+        Or(a=load, b=reset, out=lrst);                  // set ctrl bit
+        Or(a=lrst, b=inc, out=ctrl);
+
+        Inc16(in=tBout, out=tBc);                       // inc the value of Reg
+        Mux16(a=tBout, b=tBc, sel=inc, out=tBld);
+
+        Mux16(a=tBld, b=in, sel=load, out=tBrst);       // determine to load or not
+
+        Mux16(a=tBrst, b=false, sel=reset, out=tBin);   // determine to reset or not
+
+        Or16(a=tBout, b=false, out=out);                // output
 }
