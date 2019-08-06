@@ -1,0 +1,20 @@
+CHIP Selector16to15{
+    IN input[16];
+    OUT output[15];
+    PARTS:
+        Or(a=input[1], b=false, out=output[0]);
+        Or(a=input[2], b=false, out=output[1]);
+        Or(a=input[3], b=false, out=output[2]);
+        Or(a=input[4], b=false, out=output[3]);
+        Or(a=input[5], b=false, out=output[4]);
+        Or(a=input[6], b=false, out=output[5]);
+        Or(a=input[7], b=false, out=output[6]);
+        Or(a=input[8], b=false, out=output[7]);
+        Or(a=input[9], b=false, out=output[8]);
+        Or(a=input[10], b=false, out=output[9]);
+        Or(a=input[11], b=false, out=output[10]);
+        Or(a=input[12], b=false, out=output[11]);
+        Or(a=input[13], b=false, out=output[12]);
+        Or(a=input[14], b=false, out=output[13]);
+        Or(a=input[15], b=false, out=output[14]);
+}

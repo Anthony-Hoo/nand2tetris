@@ -1,0 +1,37 @@
+// instructiondecoder in nand2tetris 
+// for decoding the instructions inputed to cpu
+
+CHIP InstructionDecoder {
+    IN  instruction[16];
+    OUT iFlag,
+        aFlag,
+        c1Flag,
+        c2Flag,
+        c3Flag,
+        c4Flag,
+        c5Flag,
+        c6Flag,
+        d1Flag,
+        d2Flag,
+        d3Flag,
+        j1Flag,
+        j2Flag,
+        j3Flag;
+    PARTS:
+        Mux(a=false, b=true, sel=instruction[0], out=iFlag);
+        // Mux(a=false, b=true, sel=instruction[1], out=);      // this part of bits is not used
+        // Mux(a=false, b=true, sel=instruction[2], out=);
+        Mux(a=false, b=true, sel=instruction[3], out=aFlag);
+        Mux(a=false, b=true, sel=instruction[4], out=c1Flag);
+        Mux(a=false, b=true, sel=instruction[5], out=c2Flag);
+        Mux(a=false, b=true, sel=instruction[6], out=c3Flag);
+        Mux(a=false, b=true, sel=instruction[7], out=c4Flag);
+        Mux(a=false, b=true, sel=instruction[8], out=c5Flag);
+        Mux(a=false, b=true, sel=instruction[9], out=c6Flag);
+        Mux(a=false, b=true, sel=instruction[10], out=d1Flag);
+        Mux(a=false, b=true, sel=instruction[11], out=d2Flag);
+        Mux(a=false, b=true, sel=instruction[12], out=d3Flag);
+        Mux(a=false, b=true, sel=instruction[13], out=j1Flag);
+        Mux(a=false, b=true, sel=instruction[14], out=j2Flag);
+        Mux(a=false, b=true, sel=instruction[15], out=j3Flag);
+}
